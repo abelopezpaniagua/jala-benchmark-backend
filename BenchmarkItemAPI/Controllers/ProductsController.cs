@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using BenchmarkItemAPI.Dtos;
+using AutoMapper;
 
 namespace BenchmarkItemAPI.Controllers
 {
@@ -12,10 +14,12 @@ namespace BenchmarkItemAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,7 +31,7 @@ namespace BenchmarkItemAPI.Controllers
         [HttpGet("{id:int}", Name = "GetProductById")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var existingProduct = await _productRepository.GetProductByIdAsync(id)
+            var existingProduct = await _productRepository.GetProductByIdAsync(id);
 
             if (existingProduct == null)
             {
@@ -38,8 +42,9 @@ namespace BenchmarkItemAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct(Product product)
+        public async Task<ActionResult<Product>> CreateProduct(CreationProduct creationProduct)
         {
+            var product = _mapper.Map<Product>(creationProduct);
             var createdProduct = await _productRepository.CreateProductAsync(product);
 
             if (createdProduct == null)
@@ -47,7 +52,7 @@ namespace BenchmarkItemAPI.Controllers
                 return Conflict();
             }
 
-            return CreatedAtRoute("GetProductById", new { id = product.Id }, createdProduct);
+            return CreatedAtRoute("GetProductById", new { id = createdProduct.Id }, createdProduct);
         }
 
         [HttpPut("id:int")]
