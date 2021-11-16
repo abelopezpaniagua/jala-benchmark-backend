@@ -23,9 +23,9 @@ namespace BenchmarkItemAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] FilterParams filters)
         {
-            return Ok(await _productService.GetProducts());
+            return Ok(await _productService.GetProducts(filters));
         }
 
         [HttpGet("{id:int}", Name = "GetProductById")]

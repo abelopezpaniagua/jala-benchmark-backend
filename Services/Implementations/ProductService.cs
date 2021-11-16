@@ -14,9 +14,9 @@ namespace Services.Implementations
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts(FilterParams filters)
         {
-            return await _productRepository.GetProductsAsync();
+            return await _productRepository.GetProductsAsync(filters);
         }
 
         public async Task<Product> GetProductById(int id)

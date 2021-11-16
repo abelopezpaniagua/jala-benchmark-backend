@@ -3,6 +3,7 @@ using Domain.Abstractions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Repository.Implementations
 {
@@ -16,43 +17,40 @@ namespace Repository.Implementations
             _context = context;
         }
 
-        /// <summary>
-        /// Retrieve all existing products asynchronously
-        /// </summary>
-        /// <returns>Returns the collection of existing products.</returns>
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync(FilterParams filters)
         {
-            return await _context.Products.ToListAsync();
+            string searchFilter = filters.SearchFilter.Trim().ToLower();
+
+            var query = _context.Products
+                .OrderBy(p => p.Code)
+                .Skip((filters.PageNumber - 1) * filters.PageSize)
+                .Take(filters.PageSize)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchFilter))
+            {
+                query = query
+                    .Where(p => p.Code.ToLower().Contains(searchFilter)
+                        || p.Name.ToLower().Contains(searchFilter));
+            }
+
+            return await query
+                .ToListAsync();
         }
 
-        /// <summary>
-        /// Retrieve an existing product asynchronously using the product ID
-        /// </summary>
-        /// <param name="id">Product ID</param>
-        /// <returns>Returns the existing product otherwise returns null.</returns>
         public async Task<Product> GetProductByIdAsync(int id)
         {
             return await _context.Products
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        /// <summary>
-        /// Register a new product asynchronously
-        /// </summary>
-        /// <param name="product">Product entity</param>
-        /// <returns>If product is created successfully returns that product otherwise return null.</returns>
         public async Task<Product> CreateProductAsync(Product product)
         {
             await _context.Products.AddAsync(product);
             
             return await _context.SaveChangesAsync() > 0 ? product : null;
         }
-
-        /// <summary>
-        /// Update an existing product asynchronously
-        /// </summary>
-        /// <param name="product">Existing product entity</param>
-        /// <returns>Returns true if the product is successfully updated otherwise returns false.</returns>
 
         public async Task<bool> UpdateProductAsync(Product product)
         {
@@ -61,11 +59,6 @@ namespace Repository.Implementations
             return await _context.SaveChangesAsync() > 0;
         }
 
-        /// <summary>
-        /// Delete an existing product asynchronously
-        /// </summary>
-        /// <param name="product">Existing product entity</param>
-        /// <returns>Returns true if the product is successfully deleted otherwise returns false.</returns>
         public async Task<bool> DeleteProductAsync(Product product)
         {
             _context.Products.Remove(product);
