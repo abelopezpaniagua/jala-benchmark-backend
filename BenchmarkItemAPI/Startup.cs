@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 using Repository;
 
 namespace BenchmarkItemAPI
@@ -25,6 +26,8 @@ namespace BenchmarkItemAPI
             // Add sqlite db context
             services.AddDbContext<SqliteDbContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("sqlitecon")));
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddRepositories();
 
