@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkItemAPI", "BenchmarkItemAPI\BenchmarkItemAPI.csproj", "{6BA03A14-AF28-47A5-A768-60947D037DAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkItemAPI", "BenchmarkItemAPI\BenchmarkItemAPI.csproj", "{6BA03A14-AF28-47A5-A768-60947D037DAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{1E15C69C-134B-404A-8D31-4936817A6711}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{1E15C69C-134B-404A-8D31-4936817A6711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{854DFF2E-077F-458E-AC7A-5E380E8FC250}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1E15C69C-134B-404A-8D31-4936817A6711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E15C69C-134B-404A-8D31-4936817A6711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E15C69C-134B-404A-8D31-4936817A6711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{854DFF2E-077F-458E-AC7A-5E380E8FC250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854DFF2E-077F-458E-AC7A-5E380E8FC250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854DFF2E-077F-458E-AC7A-5E380E8FC250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854DFF2E-077F-458E-AC7A-5E380E8FC250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
