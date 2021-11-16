@@ -1,17 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Repository.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Repository;
 
 namespace BenchmarkItemAPI
@@ -31,6 +25,8 @@ namespace BenchmarkItemAPI
             // Add sqlite db context
             services.AddDbContext<SqliteDbContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("sqlitecon")));
+
+            services.AddRepositories();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
