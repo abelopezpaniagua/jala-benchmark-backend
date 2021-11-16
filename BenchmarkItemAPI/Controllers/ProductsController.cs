@@ -56,8 +56,10 @@ namespace BenchmarkItemAPI.Controllers
         }
 
         [HttpPut("id:int")]
-        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
+        public async Task<ActionResult<Product>> UpdateProduct(int id, UpdateProduct updateProduct)
         {
+            var product = _mapper.Map<Product>(updateProduct);
+
             if (id != product.Id)
             {
                 return BadRequest();
