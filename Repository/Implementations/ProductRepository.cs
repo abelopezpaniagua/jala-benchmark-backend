@@ -17,27 +17,12 @@ namespace Repository.Implementations
         }
 
         /// <summary>
-        /// Register a new product asynchronously
+        /// Retrieve all existing products asynchronously
         /// </summary>
-        /// <param name="product">Product entity</param>
-        /// <returns>If product is created successfully returns that product otherwise return null.</returns>
-        public async Task<Product> CreateProductAsync(Product product)
+        /// <returns>Returns the collection of existing products.</returns>
+        public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            await _context.Products.AddAsync(product);
-            
-            return await _context.SaveChangesAsync() > 0 ? product : null;
-        }
-
-        /// <summary>
-        /// Delete an existing product asynchronously
-        /// </summary>
-        /// <param name="product">Existing product entity</param>
-        /// <returns>Returns true if the product is successfully deleted otherwise returns false.</returns>
-        public async Task<bool> DeleteProductAsync(Product product)
-        {
-            _context.Products.Remove(product);
-
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.Products.ToListAsync();
         }
 
         /// <summary>
@@ -52,12 +37,15 @@ namespace Repository.Implementations
         }
 
         /// <summary>
-        /// Retrieve all existing products asynchronously
+        /// Register a new product asynchronously
         /// </summary>
-        /// <returns>Returns the collection of existing products.</returns>
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        /// <param name="product">Product entity</param>
+        /// <returns>If product is created successfully returns that product otherwise return null.</returns>
+        public async Task<Product> CreateProductAsync(Product product)
         {
-            return await _context.Products.ToListAsync();
+            await _context.Products.AddAsync(product);
+            
+            return await _context.SaveChangesAsync() > 0 ? product : null;
         }
 
         /// <summary>
@@ -69,6 +57,18 @@ namespace Repository.Implementations
         public async Task<bool> UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
+        /// Delete an existing product asynchronously
+        /// </summary>
+        /// <param name="product">Existing product entity</param>
+        /// <returns>Returns true if the product is successfully deleted otherwise returns false.</returns>
+        public async Task<bool> DeleteProductAsync(Product product)
+        {
+            _context.Products.Remove(product);
 
             return await _context.SaveChangesAsync() > 0;
         }
