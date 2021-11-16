@@ -13,25 +13,25 @@ namespace BenchmarkItemAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepository, IMapper mapper)
+        public ProductsController(IProductService productService, IMapper mapper)
         {
-            _productRepository = productRepository;
+            _productService = productService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return Ok(await _productRepository.GetProductsAsync());
+            return Ok(await _productService.GetProducts());
         }
 
         [HttpGet("{id:int}", Name = "GetProductById")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var existingProduct = await _productRepository.GetProductByIdAsync(id);
+            var existingProduct = await _productService.GetProductById(id);
 
             if (existingProduct == null)
             {
@@ -45,7 +45,7 @@ namespace BenchmarkItemAPI.Controllers
         public async Task<ActionResult<Product>> CreateProduct(CreationProduct creationProduct)
         {
             var product = _mapper.Map<Product>(creationProduct);
-            var createdProduct = await _productRepository.CreateProductAsync(product);
+            var createdProduct = await _productService.CreateProduct(product);
 
             if (createdProduct == null)
             {
@@ -65,7 +65,7 @@ namespace BenchmarkItemAPI.Controllers
                 return BadRequest();
             }
 
-            var isUpdated = await _productRepository.UpdateProductAsync(product);
+            var isUpdated = await _productService.UpdateProduct(product);
 
             if (!isUpdated)
             {
@@ -78,14 +78,14 @@ namespace BenchmarkItemAPI.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteProductById(int id)
         {
-            var existingProduct = await _productRepository.GetProductByIdAsync(id);
+            var existingProduct = await _productService.GetProductById(id);
 
             if (existingProduct == null)
             {
                 return NotFound();
             }
 
-            var isDeleted = await _productRepository.DeleteProductAsync(existingProduct);
+            var isDeleted = await _productService.DeleteProduct(existingProduct);
 
             if (!isDeleted)
             {

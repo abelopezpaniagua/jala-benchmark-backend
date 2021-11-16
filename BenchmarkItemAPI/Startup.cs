@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Repository.DependencyInjection;
+using Services.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace BenchmarkItemAPI
         }
 
         public IConfiguration Configuration { get; }
+        readonly string AllowCorsConfiguration = "AllowAll";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +32,19 @@ namespace BenchmarkItemAPI
             services.AddAutoMapper(typeof(Startup));
 
             services.AddRepositories();
+
+            services.AddServices();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowCorsConfiguration,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
 
             services.AddControllers();
 
@@ -52,6 +67,8 @@ namespace BenchmarkItemAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(AllowCorsConfiguration);
 
             app.UseAuthorization();
 
