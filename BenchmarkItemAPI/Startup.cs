@@ -32,6 +32,7 @@ namespace BenchmarkItemAPI
             services.AddRepositories();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BenchmarkItemAPI", Version = "v1" });

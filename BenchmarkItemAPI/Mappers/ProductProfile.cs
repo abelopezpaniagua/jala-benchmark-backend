@@ -9,7 +9,7 @@ namespace BenchmarkItemAPI.Mappers
         public ProductProfile()
         {
             CreateMap<CreationProduct, Product>();
-            CreateMap<Product, CreationProduct>();
+            CreateMap<UpdateProduct, Product>();
         }
     }
 }
