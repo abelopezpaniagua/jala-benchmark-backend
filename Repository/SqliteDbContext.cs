@@ -7,8 +7,7 @@ namespace Repository
     public class SqliteDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
-
+        
         public SqliteDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -17,7 +16,6 @@ namespace Repository
         {
             //Define properties of database entities
             DefineProductModel(modelBuilder);
-            DefineCategoryModel(modelBuilder);
         }
 
         private void DefineProductModel(ModelBuilder modelBuilder)
@@ -43,30 +41,6 @@ namespace Repository
                 .Property(p => p.Description)
                 .HasColumnType("text")
                 .IsRequired(false);
-
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithMany(c => c.Products);
-        }
-
-        private void DefineCategoryModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Category>()
-                .HasKey(c => c.Id);
-
-            modelBuilder.Entity<Category>()
-                .HasIndex(c => c.Code)
-                .IsUnique();
-
-            modelBuilder.Entity<Category>()
-                .Property(c => c.Code)
-                .HasMaxLength(10)
-                .IsRequired();
-
-            modelBuilder.Entity<Category>()
-                .Property(c => c.Name)
-                .HasMaxLength(45)
-                .IsRequired();
         }
     }
 }
