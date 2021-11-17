@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,11 +27,27 @@ namespace Services.Implementations
 
         public async Task<Product> CreateProduct(Product product)
         {
+            var existingProduct = await _productRepository
+                .GetProductByCodeAsync(product.Code);
+
+            if (existingProduct != null)
+            {
+                throw new ApplicationException("Another product exists with the same code.");
+            }
+
             return await _productRepository.CreateProductAsync(product);
         }
 
         public async Task<bool> UpdateProduct(Product product)
         {
+            var existingProduct = await _productRepository
+                .GetProductByCodeAsync(product.Code);
+
+            if (existingProduct != null && product.Id != existingProduct.Id)
+            {
+                throw new ApplicationException("Another product exists with the same code.");
+            }
+
             return await _productRepository.UpdateProductAsync(product);
         }
 

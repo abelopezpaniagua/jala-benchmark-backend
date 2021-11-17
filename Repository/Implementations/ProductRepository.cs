@@ -42,6 +42,13 @@ namespace Repository.Implementations
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task<Product> GetProductByCodeAsync(string code)
+        {
+            return await _context.Products
+                .Where(p => p.Code.Equals(code))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Product> CreateProductAsync(Product product)
         {
             await _context.Products.AddAsync(product);

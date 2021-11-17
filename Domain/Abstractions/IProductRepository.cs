@@ -19,6 +19,13 @@ namespace Domain.Abstractions
         /// <param name="id">Product ID</param>
         /// <returns>Returns the existing product otherwise returns null.</returns>
         Task<Product> GetProductByIdAsync(int id);
+
+        /// <summary>
+        /// Retrieve an existing product asynchronously using the product Code
+        /// </summary>
+        /// <param name="code">Product Code</param>
+        /// <returns>Returns the existing product otherwise returns null.</returns>
+        Task<Product> GetProductByCodeAsync(string code);
         
         /// <summary>
         /// Register a new product asynchronously
