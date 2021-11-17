@@ -11,7 +11,7 @@ namespace Domain.Abstractions
         /// </summary>
         /// <param name="filters">Filters object to define search filter and pagination filter</param>
         /// <returns>Returns the collection of existing products.</returns>
-        Task<IEnumerable<Product>> GetProductsAsync(FilterParams filters);
+        Task<PagedResult<Product>> GetProductsAsync(FilterParams filters);
 
         /// <summary>
         /// Retrieve an existing product asynchronously using the product ID

@@ -23,7 +23,7 @@ namespace BenchmarkItemAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] FilterParams filters)
+        public async Task<ActionResult<PagedResult<Product>>> GetProducts([FromQuery] FilterParams filters)
         {
             return Ok(await _productService.GetProducts(filters));
         }

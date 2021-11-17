@@ -1,9 +1,10 @@
-﻿using Domain. Entities;
+﻿using System.Linq;
+using Domain. Entities;
 using Domain.Abstractions;
+using Repository.Pagination;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Repository.Implementations
 {
@@ -17,14 +18,12 @@ namespace Repository.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync(FilterParams filters)
+        public async Task<PagedResult<Product>> GetProductsAsync(FilterParams filters)
         {
-            string searchFilter = filters.SearchFilter.Trim().ToLower();
+            string searchFilter = filters.SearchFilter?.Trim().ToLower();
 
             var query = _context.Products
                 .OrderBy(p => p.Code)
-                .Skip((filters.PageNumber - 1) * filters.PageSize)
-                .Take(filters.PageSize)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchFilter))
@@ -34,8 +33,7 @@ namespace Repository.Implementations
                         || p.Name.ToLower().Contains(searchFilter));
             }
 
-            return await query
-                .ToListAsync();
+            return await query.GetPaged(filters.PageNumber, filters.PageSize);
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
