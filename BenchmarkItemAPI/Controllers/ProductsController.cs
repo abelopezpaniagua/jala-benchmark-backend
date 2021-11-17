@@ -3,7 +3,6 @@ using Domain.Abstractions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using BenchmarkItemAPI.Dtos;
 using AutoMapper;
 
@@ -55,7 +54,7 @@ namespace BenchmarkItemAPI.Controllers
             return CreatedAtRoute("GetProductById", new { id = createdProduct.Id }, createdProduct);
         }
 
-        [HttpPut("id:int")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<Product>> UpdateProduct(int id, UpdateProduct updateProduct)
         {
             var product = _mapper.Map<Product>(updateProduct);
