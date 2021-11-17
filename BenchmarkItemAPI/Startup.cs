@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using Repository;
+using FluentValidation.AspNetCore;
 
 namespace BenchmarkItemAPI
 {
@@ -46,7 +47,11 @@ namespace BenchmarkItemAPI
                                   });
             });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
 
             services.AddSwaggerGen(c =>
             {
